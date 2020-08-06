@@ -3,18 +3,24 @@ gcloud auth login;
 gcloud init;
 
 echo Creating a custom VPC network
-gcloud compute networks create my-lb-network --subnet-mode=custom;
+read -p "Please enter a name for your VPC network; 
+  example: my-lb-network "  my-lb-network
+echo "Creating VPC network with name $my-lb-network"
+gcloud compute networks create $my-lb-network --subnet-mode=custom;
 
 echo Creating subnet
 read -p "Please enter a name for your subnet; example: my-subnet "  my-subnet
 echo "Creating subnet with name $my-subnet"
 gcloud compute networks subnets create $my-subnet \
-  --network=my-lb-network \
+  --network=$my-lb-network \
   --range=10.1.10.0/24 \
   --region=southamerica-east1;
 
 echo Reserving the IP addresses
-gcloud compute addresses create my-lb-ipv4 \
+read -p "Please enter a name for your IP address; 
+  example: my-lb-ipv4 "  my-lb-ipv4
+echo "Creating IP address with name $my-lb-ipv4"
+gcloud compute addresses create $my-lb-ipv4 \
   --ip-version=IPV4 \
   --global;
 
